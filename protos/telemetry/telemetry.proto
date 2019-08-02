@@ -21,6 +21,7 @@ service TelemetryService {
     rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
+    rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -96,6 +97,16 @@ message RcStatusResponse {
 message SubscribeStatusTextRequest {}
 message StatusTextResponse {
     StatusText status_text = 1;
+}
+
+message SubscribeActuatorControltTargetRequest {}
+message ActuatorControltResponse {
+    ActuatorControlTarget status_text = 1;
+}
+
+message ActuatorControlTarget {
+  int group = 1;
+  repeated float controls = 2;
 }
 
 message Position {
@@ -178,7 +189,7 @@ message StatusText {
         WARNING = 1;
         CRITICAL = 2;
     }
-    
+
     StatusType type = 1;
     string text = 2;
 }
