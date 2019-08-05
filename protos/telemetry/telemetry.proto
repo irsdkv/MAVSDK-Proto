@@ -22,6 +22,7 @@ service TelemetryService {
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
     rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
+    rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -102,6 +103,16 @@ message StatusTextResponse {
 message SubscribeActuatorControlTargetRequest {}
 message ActuatorControlTargetResponse {
     ActuatorControlTarget actuator_control_target = 1;
+}
+
+message SubscribeActuatorOutputStatusRequest {}
+message ActuatorOutputStatusResponse {
+    ActuatorOutputStatus actuator_output_status = 1;
+}
+
+message ActuatorOutputStatus {
+    uint32 active = 1;
+    repeated float actuator = 2;
 }
 
 message ActuatorControlTarget {
