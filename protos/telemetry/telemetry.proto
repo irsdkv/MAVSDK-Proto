@@ -12,6 +12,7 @@ service TelemetryService {
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
+    rpc SubscribeAttitudeAngularSpeed(SubscribeAttitudeAngularSpeedRequest) returns(stream AttitudeAngularSpeedResponse) {}
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
     rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
@@ -53,6 +54,11 @@ message AttitudeQuaternionResponse {
 message SubscribeAttitudeEulerRequest {}
 message AttitudeEulerResponse {
     EulerAngle attitude_euler = 1;
+}
+
+message SubscribeAttitudeAngularSpeedRequest {}
+message AttitudeAngularSpeedResponse {
+    AngularSpeed attitude_angular_speed = 1;
 }
 
 message SubscribeCameraAttitudeQuaternionRequest {}
@@ -138,6 +144,12 @@ message EulerAngle {
     float roll_deg = 1;
     float pitch_deg = 2;
     float yaw_deg = 3;
+}
+
+message AngularSpeed {
+    float rollspeed = 1;
+    float pitchspeed = 2;
+    float yawspeed = 3;
 }
 
 message SpeedNed {
