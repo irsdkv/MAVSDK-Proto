@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package mavsdk.rpc.logging;
+
+option java_package = "io.mavsdk.logging";
+option java_outer_classname = "LoggingProto";
+
+service LoggingService {
+    rpc StartLogging(StartLoggingRequest) returns(StartLoggingResponse) {}
+    rpc StopLogging(StopLoggingRequest) returns(StopLoggingResponse) {}
+    rpc SubscribeMessageFlagBits(SubscribeMessageFlagBitsRequest) returns(stream MessageFlagBitsResponse) {}
+    rpc SubscribeMessageFormat(SubscribeMessageFormatRequest) returns(stream MessageFormatResponse) {}
+    rpc SubscribeMessageInfo(SubscribeMessageInfoRequest) returns(stream MessageInfoResponse) {}
+    rpc SubscribeMessageInfoMultiple(SubscribeMessageInfoMultipleRequest) returns(stream MessageInfoMultipleResponse) {}
+    rpc SubscribeMessageParameter(SubscribeMessageParameterRequest) returns(stream MessageParameterResponse) {}
+    rpc SubscribeMessageAddLogged(SubscribeMessageAddLoggedRequest) returns(stream MessageAddLoggedResponse) {}
+    rpc SubscribeMessageRemoveLogged(SubscribeMessageRemoveLoggedRequest) returns(stream MessageRemoveLoggedResponse) {}
+    rpc SubscribeMessageData(SubscribeMessageDataRequest) returns(stream MessageDataResponse) {}
+    rpc SubscribeMessageLogging(SubscribeMessageLoggingRequest) returns(stream MessageLoggingResponse) {}
+    rpc SubscribeMessageDropout(SubscribeMessageDropoutRequest) returns(stream MessageDropoutResponse) {}
+}
+
+
+message StartLoggingRequest {}
+message StartLoggingResponse {
+    LoggingResult logging_result = 1;
+}
+
+message StopLoggingRequest {}
+message StopLoggingResponse {
+    LoggingResult logging_result = 1;
+}
+
+
+message SubscribeMessageFlagBitsRequest {}
+message MessageFlagBitsResponse {
+    MessageFlagBits message_flag_bits = 1;
+}
+
+message MessageFlagBits {
+    repeated uint32 compat_flags = 1;
+    repeated uint32 incompat_flags = 2;
+    repeated uint64 appended_offsets = 3;
+}
+
+
+message SubscribeMessageFormatRequest {}
+message MessageFormatResponse {
+    MessageFormat message_format = 1;
+}
+
+message MessageFormat {
+    string format = 1;
+}
+
+
+message SubscribeMessageInfoRequest {}
+message MessageInfoResponse {
+    MessageInfo message_info = 1;
+}
+
+message MessageInfo {
+    string key = 1;
+    string value = 2;
+}
+
+
+message SubscribeMessageInfoMultipleRequest {}
+message MessageInfoMultipleResponse {
+    MessageInfoMultiple message_info_multiple = 1;
+}
+
+message MessageInfoMultiple {
+    bool is_continued = 1;
+    string key = 2;
+    string value = 3;
+}
+
+
+message SubscribeMessageParameterRequest {}
+message MessageParameterResponse {
+    MessageParameter message_parameter = 1;
+}
+
+message MessageParameter {
+    string key = 1;
+    string value = 2;
+}
+
+
+message SubscribeMessageAddLoggedRequest {}
+message MessageAddLoggedResponse {
+    MessageAddLogged message_add_logged = 1;
+}
+
+message MessageAddLogged {
+    uint32 multi_id = 1;
+    uint32 msg_id = 2;
+    string message_name = 3;
+}
+
+
+message SubscribeMessageRemoveLoggedRequest {}
+message MessageRemoveLoggedResponse {
+    MessageRemoveLogged message_remove_logged = 1;
+}
+
+message MessageRemoveLogged {
+    uint32 msg_id = 1;
+}
+
+
+message SubscribeMessageDataRequest {}
+message MessageDataResponse {
+    MessageData message_data = 1;
+}
+
+message MessageData {
+    uint32 msg_id = 1;
+    bytes data = 2;
+}
+
+
+message SubscribeMessageLoggingRequest {}
+message MessageLoggingResponse {
+    MessageLogging message_logging = 1;
+}
+
+message MessageLogging {
+    enum LogLevel {
+        UNDEF = 0; // For proto3
+        EMERG = 48; // System is unusable.
+        ALERT = 49; // Action must be taken immediately.
+        CRIT = 50; // Critical conditions.
+        ERR = 51; // Error conditions.
+        WARNING = 52; // Warning conditions.
+        NOTICE = 53; // Normal but significant condition.
+        INFO = 54; // Informational.
+        DEBUG = 55; // Debug-level messages.
+    }
+
+    LogLevel log_level = 1;
+    uint64 timestamp = 2;
+    string data = 3;
+}
+
+
+message SubscribeMessageDropoutRequest {}
+message MessageDropoutResponse {
+    MessageDropout message_dropout = 1;
+}
+
+message MessageDropout {
+    uint32 duration = 1;
+}
+
+// Result type.
+message LoggingResult {
+    // Possible results returned for action requests
+    enum Result {
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Success. The action command was accepted by the vehicle
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+        BUSY = 4; // Vehicle is busy
+        COMMAND_DENIED = 5; // Command refused by vehicle
+        TIMEOUT = 8; // Request timed out
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
